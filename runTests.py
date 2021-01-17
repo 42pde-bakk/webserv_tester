@@ -384,8 +384,9 @@ def GET_TESTS(testNum=0):
 	index += 1
 	if testNum == 0 or index == int(testNum):
 		r = requests.get("http://localhost:7070/auto")
-		print(r.text)
-		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "index.html")
+		assertResponse(r, 404, index, [AssertTypes.BODY_CONTAIN_ASSERT], "error")
+		# Changed status code to 404 because nginx nginx only autoindex if the uri ends with a '/'
+		# Source: http://nginx.org/en/docs/http/ngx_http_autoindex_module.html
 
 	index += 1
 	if testNum == 0 or index == int(testNum):
@@ -395,12 +396,12 @@ def GET_TESTS(testNum=0):
 	index += 1
 	if testNum == 0 or index == int(testNum):
 		r = requests.get("http://localhost:7070/auto/index.html")
-		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Welcome to Webserv !")
+		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Welcome to Webserv!")
 
 	index += 1
 	if testNum == 0 or index == int(testNum):
 		r = requests.get("http://localhost:7070/auto/test42/")
-		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "YoupiBanane")
+		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Error")
 
 	index += 1
 	if testNum == 0 or index == int(testNum):
