@@ -401,7 +401,7 @@ def GET_TESTS(testNum=0):
 	index += 1
 	if testNum == 0 or index == int(testNum):
 		r = requests.get("http://localhost:7070/auto/test42/")
-		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Error")
+		assertResponse(r, 404, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Error")
 
 	index += 1
 	if testNum == 0 or index == int(testNum):
