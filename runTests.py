@@ -400,7 +400,8 @@ def GET_TESTS(testNum=0):
 
 	index += 1
 	if testNum == 0 or index == int(testNum):
-		r = requests.get("http://localhost:7070/auto/test42/")
+		r = requests.get("http://localhost:8080/")
+		# print(r.text)
 		assertResponse(r, 404, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Error")
 
 	index += 1
@@ -419,7 +420,7 @@ def POST_TESTS(testNum=0):
 	print("\n     ~ POST REQUESTS -----------------------> \n")
 
 	# ------- POST - 200/201 - NO CGI
-	newFilePath = '../webserv/htmlfiles/newFile'  # change this!
+	newFilePath = '../vogwebserv/htmlfiles/newFile'  # change this!
 	index += 1
 	platform = "darwin"
 	if testNum == 0 or index == int(testNum):  # 1
