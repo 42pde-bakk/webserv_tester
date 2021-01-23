@@ -381,35 +381,35 @@ def GET_TESTS(testNum=0):
 
 	# ------- GET : AutoIndex
 
-	# index += 1
-	# if testNum == 0 or index == int(testNum):
-	# 	r = requests.get("http://localhost:7070/auto")
-	# 	assertResponse(r, 404, index, [AssertTypes.BODY_CONTAIN_ASSERT], "error")
-	# 	# Changed status code to 404 because nginx nginx only autoindex if the uri ends with a '/'
-	# 	# Source: http://nginx.org/en/docs/http/ngx_http_autoindex_module.html
-	#
-	# index += 1
-	# if testNum == 0 or index == int(testNum):
-	# 	r = requests.get("http://localhost:7070/auto/")
-	# 	print(r.headers)
-	# 	print(r.text)
-	# 	assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "index.html")
-	#
-	# index += 1
-	# if testNum == 0 or index == int(testNum):
-	# 	r = requests.get("http://localhost:7070/auto/index.html")
-	# 	assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Welcome to Webserv!")
-	#
-	# index += 1
-	# if testNum == 0 or index == int(testNum):
-	# 	r = requests.get("http://localhost:8080/")
-	# 	# print(r.text)
-	# 	assertResponse(r, 404, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Error")
-	#
-	# index += 1
-	# if testNum == 0 or index == int(testNum):
-	# 	r = requests.get("http://localhost:7070/auto/xxx")
-	# 	assertResponse(r, 404, index)  # ---> Potentiellement à modifier
+	index += 1
+	if testNum == 0 or index == int(testNum):
+		r = requests.get("http://localhost:7070/auto")
+		assertResponse(r, 404, index, [AssertTypes.BODY_CONTAIN_ASSERT], "error")
+		# Changed status code to 404 because nginx nginx only autoindex if the uri ends with a '/'
+		# Source: http://nginx.org/en/docs/http/ngx_http_autoindex_module.html
+
+	index += 1
+	if testNum == 0 or index == int(testNum):
+		r = requests.get("http://localhost:7070/auto/")
+		# print(r.headers)
+		# print(r.text)
+		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "index.html")
+
+	index += 1
+	if testNum == 0 or index == int(testNum):
+		r = requests.get("http://localhost:7070/auto/index.html")
+		assertResponse(r, 200, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Welcome to Webserv!")
+
+	index += 1
+	if testNum == 0 or index == int(testNum):
+		r = requests.get("http://localhost:8080/")
+		# print(r.text)
+		assertResponse(r, 404, index, [AssertTypes.BODY_CONTAIN_ASSERT], "Error")
+
+	index += 1
+	if testNum == 0 or index == int(testNum):
+		r = requests.get("http://localhost:7070/auto/xxx")
+		assertResponse(r, 404, index)  # ---> Potentiellement à modifier
 
 
 # -----------------------------------------------------------------------------
@@ -422,7 +422,7 @@ def POST_TESTS(testNum=0):
 	print("\n     ~ POST REQUESTS -----------------------> \n")
 
 	# ------- POST - 200/201 - NO CGI
-	newFilePath = '../vogwebserv/htmlfiles/newFile'  # change this!
+	newFilePath = '../webserv/htmlfiles/newFile'  # change this!
 	index += 1
 	platform = "darwin"
 	if testNum == 0 or index == int(testNum):  # 1
@@ -430,7 +430,11 @@ def POST_TESTS(testNum=0):
 			os.remove(newFilePath)
 		payload = "Hello ! I am a new file\r\n\r\n"
 		r = requests.post('http://localhost:7070/newFile', data=payload, headers={})
-		assertResponse(r, 201, index, [AssertTypes.FILE_CONTAIN_ASSERT], "Hello ! I am a new file", newFilePath)
+		try:
+			assertResponse(r, 201, index, [AssertTypes.FILE_CONTAIN_ASSERT], "Hello ! I am a new file", newFilePath)
+		except FileNotFoundError:
+			print(f'Please make sure that {newFilePath} points to a \'/newFile\' file inside your webservs root folder')
+			exit(1)
 	index += 1
 	if testNum == 0 or index == int(testNum):  # 2
 		payload = ". I have been updated !\r\n\r\n"
@@ -533,7 +537,11 @@ def PUT_TESTS(testNum=0):
 			os.remove(newFilePath)
 		payload = "Hello ! I am a new file\r\n\r\n"
 		r = requests.put('http://localhost:7070/newFile', data=payload, headers={})
-		assertResponse(r, 201, index, [AssertTypes.FILE_CONTAIN_ASSERT], "Hello ! I am a new file", newFilePath)
+		try:
+			assertResponse(r, 201, index, [AssertTypes.FILE_CONTAIN_ASSERT], "Hello ! I am a new file", newFilePath)
+		except FileNotFoundError:
+			print(f'Please make sure that {newFilePath} points to a \'/newFile\' file inside your webservs root folder')
+			exit(1)
 
 	# ------- PUT - 204 OK
 	index += 1
